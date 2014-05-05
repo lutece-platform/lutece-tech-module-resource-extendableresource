@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><plug-in>
+    <name>resource-extendableresource</name>
+    <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
+    <version>1.0.0</version>
+    <description>module.resource.extendableresource.plugin.description</description>
+    <documentation/>
+    <installation/>
+    <changes/>
+    <user-guide/>
+    <provider>module.resource.extendableresource.plugin.provider</provider>
+    <provider-url>http://lutece.paris.fr</provider-url>
+    <icon-url>images/admin/skin/plugins/resource/modules/extendableresource/resource-extendableresource.png</icon-url>
+    <copyright>Copyright 2001-2014 Mairie de Paris</copyright>
+    <core-version-dependency>
+        <min-core-version>4.3.0</min-core-version>
+        <max-core-version/>
+    </core-version-dependency>
+    <db-pool-required>0</db-pool-required>
+
+    <!-- Applications -->
+    <applications>
+    </applications>
+
+    <!-- Administration interface parameters -->
+    <admin-features>
+    </admin-features>
+
+	<portlets>
+    </portlets>
+
+	<!-- Filters -->
+	<filters>
+	</filters>
+</plug-in>
