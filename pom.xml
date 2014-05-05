@@ -39,7 +39,7 @@
 	<properties>
 		<componentName>resource-extendableresource</componentName>
 		<jiraProjectName>RESEXTEND</jiraProjectName>
-		<jiraComponentId></jiraComponentId>
+		<jiraComponentId>12354</jiraComponentId>
 	</properties>
 
     <scm>
