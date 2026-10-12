@@ -34,34 +34,36 @@
 package fr.paris.lutece.plugins.resource.modules.extendableresource.service.provider;
 
 import fr.paris.lutece.plugins.extend.business.type.ExtendableResourceType;
-import fr.paris.lutece.plugins.extend.service.ExtendableResourceManager;
-import fr.paris.lutece.plugins.extend.service.type.ExtendableResourceTypeService;
+import fr.paris.lutece.plugins.extend.service.IExtendableResourceManager;
+import fr.paris.lutece.plugins.extend.service.type.IExtendableResourceTypeService;
 import fr.paris.lutece.plugins.resource.business.IResource;
 import fr.paris.lutece.plugins.resource.business.IResourceType;
 import fr.paris.lutece.plugins.resource.business.ResourceTypeDefaultImplementation;
 import fr.paris.lutece.plugins.resource.modules.extendableresource.business.ResourceExtendableResource;
 import fr.paris.lutece.plugins.resource.service.ResourceCacheService;
 import fr.paris.lutece.plugins.resource.service.provider.IResourceProvider;
+import fr.paris.lutece.portal.service.resource.IExtendableResource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 
 /**
  * Resource provider for extendable resources
  */
+@ApplicationScoped
 public class ExtendableResourceResourceProvider implements IResourceProvider
 {
     @Inject
-    @Named( value = ExtendableResourceManager.BEAN_MANAGER )
-    private ExtendableResourceManager _extendableResourceManager;
+    private IExtendableResourceManager _extendableResourceManager;
     @Inject
-    @Named( value = ExtendableResourceTypeService.BEAN_SERVICE )
-    private ExtendableResourceTypeService _extendableResourceTypeService;
+    private IExtendableResourceTypeService _extendableResourceTypeService;
+    @Inject
+    private ResourceCacheService _resourceCacheService;
 
     /**
      * Default constructor
@@ -104,13 +106,16 @@ public class ExtendableResourceResourceProvider implements IResourceProvider
     public IResource getResource( String strIdResource, String strResourceTypeName )
     {
         String strCacheKey = ResourceCacheService.getResourceCacheKey( strIdResource, strResourceTypeName );
-        ResourceExtendableResource resource = (ResourceExtendableResource) ResourceCacheService.getInstance( )
-                .getFromCache( strCacheKey );
+        ResourceExtendableResource resource = (ResourceExtendableResource) _resourceCacheService.get( strCacheKey );
         if ( resource == null )
         {
-            resource = new ResourceExtendableResource( _extendableResourceManager.getResource( strIdResource,
-                    strResourceTypeName ) );
-            ResourceCacheService.getInstance( ).putInCache( strCacheKey, resource );
+            IExtendableResource extendableResource = _extendableResourceManager.getResource( strIdResource, strResourceTypeName );
+            if ( extendableResource == null )
+            {
+                return null;
+            }
+            resource = new ResourceExtendableResource( extendableResource );
+            _resourceCacheService.put( strCacheKey, resource );
         }
         return resource;
     }
